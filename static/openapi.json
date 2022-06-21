@@ -1,0 +1,317 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Students API",
+    "description": "A simple Flask REST API"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Returns \"Hello from students API\"",
+        "responses": {
+          "200": {
+            "description": "Hello from students API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Hello from students API"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Returns list of all students",
+        "responses": {
+          "200": {
+            "description": "Returns list of all students",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": [
+                    {
+                      "age": 20,
+                      "cellphone": "+380862546443",
+                      "email": "test5@test.com",
+                      "id": 1,
+                      "name": "Student"
+                    },
+                    {
+                      "age": 22,
+                      "cellphone": "+380962546243",
+                      "email": "test3@test.com",
+                      "id": 4,
+                      "name": "Student3"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/add": {
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Creates a new student",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "string"
+                  },
+                  "cellphone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns added student",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": {
+                    "age": 20,
+                    "cellphone": "+380555555555",
+                    "email": "TEST@TEST.com",
+                    "id": 8,
+                    "name": "TEST"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/get/{id}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Gets a student by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID of the student to get",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns student",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": {
+                    "age": 20,
+                    "cellphone": "+380555555555",
+                    "email": "TEST@TEST.com",
+                    "id": 8,
+                    "name": "TEST"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/modify/{id}": {
+      "patch": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Modify a student by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID of the student",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/students/change/{id}": {
+      "put": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Change a student by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID of the student",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "string"
+                  },
+                  "cellphone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/students/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Delete a student by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID of the student",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Student was deleted!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health-check/ok": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "Returns \"Healthy\"",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Healthy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health-check/bad": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Health check",
+        "responses": {
+          "200": {
+            "description": "Returns \"Not healthy\"",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Not healthy"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

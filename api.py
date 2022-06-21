@@ -1,6 +1,7 @@
+from crypt import methods
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import dotenv
 from sqlalchemy import create_engine
@@ -64,12 +65,12 @@ student_schema = StudentSchema
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>HEllo from students API</h1>", 200
+    return jsonify("Hello from students API"), 200
 
 
 @app.route('/api', methods=['GET'])
 def api_main():
-    return jsonify('Hello, World!'), 200
+    return render_template('swaggerui.html')
 
 
 @app.route('/api/students', methods=['GET'])
@@ -88,6 +89,55 @@ def get_student(id):
     return jsonify(response), 200
 
 
+@app.route('/api/students/modify/<int:id>', methods=['PATCH'])
+def modify_student(id):
+    student_info = Student.get_by_id(id)
+    json_data = request.get_json()
+    if "name" in json_data:
+        student_info.name = json_data.get('name')
+    if "email" in json_data:
+        student_info.email = json_data.get('email')
+    if "age" in json_data:
+        student_info.age = json_data.get('age')
+    if "cellphone" in json_data:
+        student_info.cellphone = json_data.get('cellphone')
+
+    try:
+        db.session.commit()
+    except:
+        return jsonify("Something went wrong!"), 500
+
+    return jsonify(), 204
+
+
+@app.route('/api/students/change/<int:id>', methods=['PUT'])
+def change_student(id):
+    student_info = Student.get_by_id(id)
+    json_data = request.get_json()
+
+    student_info.name = json_data.get('name')
+    student_info.email = json_data.get('email')
+    student_info.age = json_data.get('age')
+    student_info.cellphone = json_data.get('cellphone')
+    try:
+        db.session.commit()
+    except:
+        return jsonify("Something went wrong!"), 500
+
+    return jsonify(), 204
+
+
+@app.route('/api/students/delete/<int:id>', methods=['DELETE'])
+def delete_student(id):
+    student_to_delete = Student.get_by_id(id)
+    try:
+        db.session.delete(student_to_delete)
+        db.session.commit()
+        return jsonify("Student was deleted!"), 200
+    except:
+        return jsonify("Something went wrong!"), 500
+
+
 @app.route('/api/students/add', methods=['POST'])
 def add_student():
     json_data = request.get_json()
@@ -103,9 +153,18 @@ def add_student():
     return jsonify(data), 201
 
 
+@app.route('/api/health-check/ok', methods=["GET"])
+def heath_check_ok():
+    return jsonify('Healthy'), 200
+
+
+@app.route('/api/health-check/bad', methods=["GET"])
+def heath_check_bad():
+    return jsonify('Not healthy'), 500
+
+
 if __name__ == "__main__":
     if not database_exists(engine.url):
-        print("DONT EXIST")
         create_database(engine.url)
     db.create_all()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True, port=5000)
