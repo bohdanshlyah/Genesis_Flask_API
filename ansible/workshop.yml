@@ -69,4 +69,4 @@
         state: present
         project_src: /home/ubuntu/Genesis
         files:
-          - aws-docker-compose.yml
+          - docker-compose.yml
