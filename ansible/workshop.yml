@@ -47,6 +47,10 @@
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
     
+    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+      community.crypto.openssh_keypair:
+        path: /home/ubuntu/.ssh/id_rsa
+
     - name: Clone a github repository
       ansible.builtin.git:
         repo: git@github.com:bohdanshlyah/Genesis_Flask_API.git
@@ -55,14 +59,10 @@
         clone: yes
         update: yes
 
-
-    - name: Copy env
-      ansible.builtin.copy:
-        src: ../.env
-        dest: /home/ubuntu/Genesis/
-        owner: root
-        group: root
-        mode: '0644'
+    - name: Create env file
+      template:
+        src: env.j2
+        dest: /home/ubuntu/Genesis/.env
 
     - name: Start Docker Compose service
       become: true
