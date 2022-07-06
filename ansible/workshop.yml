@@ -1,0 +1,72 @@
+- hosts: web_server
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: Update all packeges
+      apt:
+        update_cache: yes 
+        name: "*"
+        state: latest
+
+    - name: Install dependencies
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - htop
+          - git
+    
+    - name: Install apt key
+      ansible.builtin.apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
+        keyring: /etc/apt/trusted.gpg.d/docker.gpg
+
+
+    - name: Install docker repo
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        filename: docker
+
+    - name: Install docker
+      apt:
+        update_cache: yes
+        pkg:
+        - docker-ce 
+        - docker-ce-cli
+        - containerd.io 
+        - docker-compose
+    - name: Install docker-compose from official github repo
+      get_url:
+        url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+    
+    - name: Clone a github repository
+      ansible.builtin.git:
+        repo: git@github.com:bohdanshlyah/Genesis_Flask_API.git
+        dest: /home/ubuntu/Genesis/
+        key_file: /home/ubuntu/.ssh/id_rsa
+        clone: yes
+        update: yes
+
+
+    - name: Copy env
+      ansible.builtin.copy:
+        src: ../.env
+        dest: /home/ubuntu/Genesis/
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+
+    - name: Start Docker Compose service
+      docker_compose:
+        pull: true
+        state: present
+        project_src: /home/ubuntu/Genesis
+        files:
+          - aws-docker-compose.yml

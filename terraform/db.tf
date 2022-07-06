@@ -12,6 +12,7 @@ resource "aws_db_instance" "workshop" {
   engine               = "mysql"
   engine_version       = "8.0.29"
   instance_class       = "db.t2.micro"
+  identifier           = "workshop-1"
   db_name              = "workshop"
   username             = "workshop"
   password             = "workshop"
