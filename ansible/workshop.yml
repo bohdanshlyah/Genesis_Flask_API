@@ -40,6 +40,7 @@
         - docker-ce-cli
         - containerd.io 
         - docker-compose
+   
     - name: Install docker-compose from official github repo
       get_url:
         url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
@@ -59,11 +60,12 @@
       ansible.builtin.copy:
         src: ../.env
         dest: /home/ubuntu/Genesis/
-        owner: ubuntu
-        group: ubuntu
+        owner: root
+        group: root
         mode: '0644'
 
     - name: Start Docker Compose service
+      become: true
       docker_compose:
         pull: true
         state: present
