@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - dev
+      - master
 
 env:
   REGISTRY: bohdanshlyah/Genesis_Flask_API
