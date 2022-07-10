@@ -55,7 +55,7 @@ jobs:
     name: Deploy
     needs: build_and_push
     env:
-      HOST: 3.123.17.67
+      HOST: ${{ secrets.HOST }}
       USERNAME: ${{ secrets.USERNAME }}
     steps:
       - name: Deploy to EC2 instanse via SSH action
