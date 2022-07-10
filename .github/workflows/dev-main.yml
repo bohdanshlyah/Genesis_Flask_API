@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  REGISTRY: bohdanshlyah/Genesis_Flask_API
+  REGISTRY: bohdanshlyah/genesis_flask_api
 
 jobs:
   lint:
