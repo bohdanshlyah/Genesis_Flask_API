@@ -1,9 +1,8 @@
-from crypt import methods
+import dotenv
 import os
 
 from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-import dotenv
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 from marshmallow import Schema, fields
@@ -15,8 +14,8 @@ db_pass = os.environ.get('DB_PASSWORD')
 db_hostname = os.environ.get('DB_HOSTNAME')
 db_name = os.environ.get('DB_NAME')
 
-DB_URI = 'mysql+pymysql://{db_username}:{db_password}@{db_host}/{database}'.format(
-    db_username=db_user, db_password=db_pass, db_host=db_hostname, database=db_name)
+DB_URI = 'mysql+pymysql://{db_user}:{db_pass}@{db_host}/{database}'.format(
+    db_user=db_user, db_pass=db_pass, db_host=db_hostname, database=db_name)
 
 engine = create_engine(DB_URI, echo=True)
 
@@ -104,7 +103,7 @@ def modify_student(id):
 
     try:
         db.session.commit()
-    except:
+    except ValueError:
         return jsonify("Something went wrong!"), 500
 
     return jsonify(), 204
@@ -121,7 +120,7 @@ def change_student(id):
     student_info.cellphone = json_data.get('cellphone')
     try:
         db.session.commit()
-    except:
+    except ValueError:
         return jsonify("Something went wrong!"), 500
 
     return jsonify(), 204
@@ -134,7 +133,7 @@ def delete_student(id):
         db.session.delete(student_to_delete)
         db.session.commit()
         return jsonify("Student was deleted!"), 200
-    except:
+    except ValueError:
         return jsonify("Something went wrong!"), 500
 
 
