@@ -56,7 +56,8 @@ jobs:
     needs: build_and_push
     strategy:
       matrix:
-        host: ["3.71.199.254", "3.68.167.230"]
+        host: ["${{ secrets.HOST1 }}", "${{ secrets.HOST2 }}"]
+        sshkey: ["${{ secrets.SSH_KEY1 }}", "${{ secrets.SSH_KEY2 }}"]
     env:
       HOST: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
@@ -66,7 +67,7 @@ jobs:
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ matrix.sshkey }}
           envs: ${{ secrets.DOCKERHUB_USERNAME }}, ${{ secrets.DOCKERHUB_TOKEN }}
           port: 22
           script: |
