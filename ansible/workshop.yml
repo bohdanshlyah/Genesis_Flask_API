@@ -1,4 +1,4 @@
-- hosts: web_server
+- hosts: web_servers
   remote_user: ubuntu
   become: true
 
@@ -50,12 +50,15 @@
     - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
       community.crypto.openssh_keypair:
         path: /home/ubuntu/.ssh/id_rsa
+        size: 4096
+        comment: bohdanshlyah@gmail.com
 
     - name: Clone a github repository
       ansible.builtin.git:
         repo: git@github.com:bohdanshlyah/Genesis_Flask_API.git
         dest: /home/ubuntu/Genesis/
-        key_file: /home/ubuntu/.ssh/id_rsa
+        accept_hostkey: true
+        key_file: "/home/ubuntu/.ssh/id_rsa"
         clone: yes
         update: yes
 

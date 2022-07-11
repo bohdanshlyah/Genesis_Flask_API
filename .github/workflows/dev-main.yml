@@ -54,8 +54,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     needs: build_and_push
+    strategy:
+      matrix:
+        host: ["3.71.199.254", "3.68.167.230"]
     env:
-      HOST: ${{ secrets.HOST }}
+      HOST: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
     steps:
       - name: Deploy to EC2 instanse via SSH action
