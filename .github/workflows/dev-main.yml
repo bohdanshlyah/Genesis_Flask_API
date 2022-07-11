@@ -7,6 +7,10 @@ on:
 
 env:
   REGISTRY: bohdanshlyah/genesis_flask_api
+  HOST1: ${{ secrets.HOST1 }}
+  HOST2: ${{ secrets.HOST2 }}
+  SSH_KEY1: ${{ secrets.SSH_KEY1 }}
+  SSH_KEY2: ${{ secrets.SSH_KEY2 }}
 
 jobs:
   lint:
@@ -56,8 +60,8 @@ jobs:
     needs: build_and_push
     strategy:
       matrix:
-        host: ["${{ secrets.HOST1 }}", "${{ secrets.HOST2 }}"]
-        sshkey: ["${{ secrets.SSH_KEY1 }}", "${{ secrets.SSH_KEY2 }}"]
+        host: [$HOST1, $HOST2]
+        sshkey: [$SSH_KEY1, $SSH_KEY2]
     env:
       HOST: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
