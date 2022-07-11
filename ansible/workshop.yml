@@ -47,11 +47,13 @@
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
     
-    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
-      community.crypto.openssh_keypair:
-        path: /home/ubuntu/.ssh/id_rsa
-        size: 4096
-        comment: bohdanshlyah@gmail.com
+    - name: Copy ssh key
+      ansible.builtin.copy:
+          src: ~/.ssh/devops
+          dest: /home/ubuntu/.ssh/devops
+          owner: ubuntu
+          group: ubuntu
+          mode: '0600'
 
     - name: Clone a github repository
       ansible.builtin.git:

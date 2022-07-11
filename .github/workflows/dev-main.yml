@@ -9,8 +9,6 @@ env:
   REGISTRY: bohdanshlyah/genesis_flask_api
   HOST1: ${{ secrets.HOST1 }}
   HOST2: ${{ secrets.HOST2 }}
-  SSH_KEY1: ${{ secrets.SSH_KEY1 }}
-  SSH_KEY2: ${{ secrets.SSH_KEY2 }}
 
 jobs:
   lint:
@@ -61,7 +59,6 @@ jobs:
     strategy:
       matrix:
         host: [$HOST1, $HOST2]
-        sshkey: [$SSH_KEY1, $SSH_KEY2]
     env:
       HOST: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
@@ -71,7 +68,7 @@ jobs:
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
-          key: ${{ matrix.sshkey }}
+          key: ${{ secrets.SSH_KEY }}
           envs: ${{ secrets.DOCKERHUB_USERNAME }}, ${{ secrets.DOCKERHUB_TOKEN }}
           port: 22
           script: |
