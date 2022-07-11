@@ -58,7 +58,7 @@ jobs:
     needs: build_and_push
     strategy:
       matrix:
-        host: ["${{ secrets.HOST1 }}", "${{ secrets.HOST2 }}"]
+        host: ${{ secrets.HOST1 }}, ${{ secrets.HOST2 }}
     env:
       HOST: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
