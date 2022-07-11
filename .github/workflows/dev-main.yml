@@ -7,8 +7,6 @@ on:
 
 env:
   REGISTRY: bohdanshlyah/genesis_flask_api
-  HOST1: ${{ secrets.HOST1 }}
-  HOST2: ${{ secrets.HOST2 }}
 
 jobs:
   lint:
