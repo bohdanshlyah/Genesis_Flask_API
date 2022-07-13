@@ -5,11 +5,6 @@ on:
     branches:
       - master
 
-env:
-  REGISTRY: bohdanshlyah/genesis_flask_api
-  HOST1: ${{ secrets.HOST1 }}
-  HOST2: ${{ secrets.HOST2 }}
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -58,8 +53,8 @@ jobs:
     needs: build_and_push
     env:
       HOST: ${{ matrix.host }}
-      HOST1: ${{ env.HOST1 }}
-      HOST2: ${{ env.HOST2 }}
+      HOST1: ${{ secrets.HOST1 }}
+      HOST2: ${{ secrets.HOST2 }}
       USERNAME: ${{ secrets.USERNAME }}
     strategy:
       matrix:
@@ -90,8 +85,8 @@ jobs:
       name: API operation check
       needs: deploy
       env:
-        HOST1: ${{ env.HOST1 }}
-        HOST2: ${{ env.HOST2 }}
+        HOST1: ${{ secrets.HOST1 }}
+        HOST2: ${{ secrets.HOST2 }}
       steps:
         - name: Get answer from host1
           run: curl $HOST1:5000
