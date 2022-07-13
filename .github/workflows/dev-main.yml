@@ -56,9 +56,9 @@ jobs:
       USERNAME: ${{ secrets.USERNAME }}
     strategy:
       matrix: 
-        include:
-          - HOSTS: ${{ secrets.HOST1 }}
-          - HOSTS: ${{ secrets.HOST2 }}
+        HOSTS:
+          - ${{ secrets.HOST1 }}
+          - ${{ secrets.HOST2 }}
 
     steps:
       - name: Deploy to EC2 instanse via SSH action
