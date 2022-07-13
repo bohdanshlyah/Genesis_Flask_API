@@ -5,11 +5,6 @@ on:
     branches:
       - master
 
-env:
-  USERNAME: ${{ secrets.USERNAME }}
-  HOST1: 1
-  HOST2: 2
-  
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -60,8 +55,10 @@ jobs:
     strategy:
       matrix: 
         HOSTS:
-          - ${{ env.HOST1 }}
-          - ${{ env.HOST2 }}
+          - 3.127.107.176
+          - 3.121.185.101
+    env:
+      USERNAME: ${{ secrets.USERNAME }}
 
     steps:
       - name: Deploy to EC2 instanse via SSH action
