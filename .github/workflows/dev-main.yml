@@ -52,18 +52,20 @@ jobs:
     name: Deploy
     needs: build_and_push
     env:
-      HOST: ${{ matrix.host }}
-      HOST1: ${{ secrets.HOST1 }}
-      HOST2: ${{ secrets.HOST2 }}
+      # HOSTS: ${{ matrix.host }}
       USERNAME: ${{ secrets.USERNAME }}
     strategy:
-      matrix:
-        host: ["${{ env.HOST1 }}", "${{ env.HOST2 }}"] #3.71.199.254 3.68.167.230
+      matrix: 
+        HOSTS: [host1, host2]
+        include:
+          host1: ${{ secrets.HOST1 }}
+          host2: ${{ secrets.HOST2 }}
+
     steps:
       - name: Deploy to EC2 instanse via SSH action
         uses: appleboy/ssh-action@v0.1.3
         with:
-          host: ${{ env.HOST }}
+          host: ${{ matrix.HOSTS }}
           username: ${{ env.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           envs: ${{ secrets.DOCKERHUB_USERNAME }}, ${{ secrets.DOCKERHUB_TOKEN }}
