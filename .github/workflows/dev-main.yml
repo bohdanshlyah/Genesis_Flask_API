@@ -98,6 +98,8 @@ jobs:
         
       - name: HOST1 - Status OK!
         if: ${{ steps.host1_answer.outputs }} == "Hello from students API"
+        run: echo "HOST1 - Status OK!"
        
       - name: HOST2 - Status OK!
         if: ${{ steps.host2_answer.outputs }} == "Hello from students API"
+        run: echo "HOST2 - Status OK!"
