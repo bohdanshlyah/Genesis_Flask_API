@@ -58,7 +58,7 @@ jobs:
       USERNAME: ${{ secrets.USERNAME }}
     strategy:
       matrix:
-        host: [$HOST1, $HOST2] #3.71.199.254 3.68.167.230
+        host: [${{ env.HOST1 }}, ${{ env.HOST2 }}] #3.71.199.254 3.68.167.230
     steps:
       - name: Deploy to EC2 instanse via SSH action
         uses: appleboy/ssh-action@v0.1.3
