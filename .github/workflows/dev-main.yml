@@ -81,23 +81,23 @@ jobs:
             sudo docker-compose up -d
 
   helth_check:
-      runs-on: ubuntu-latest
-      name: API operation check
-      needs: deploy
-      env:
-        HOST1: ${{ secrets.HOST1 }}
-        HOST2: ${{ secrets.HOST2 }}
-      steps:
-        - name: Get answer from host1
-          run: curl $HOST1:5000
-          id: host1_answer
+    runs-on: ubuntu-latest
+    name: API operation check
+    needs: deploy
+    env:
+      HOST1: ${{ secrets.HOST1 }}
+      HOST2: ${{ secrets.HOST2 }}
+    steps:
+      - name: Get answer from host1
+        run: curl $HOST1:5000
+        id: host1_answer
       
-        - name: Get answer from host2
-          run: curl $HOST2:5000
-          id: host2_answer
+      - name: Get answer from host2
+        run: curl $HOST2:5000
+        id: host2_answer
         
-        - name: HOST1 - Status OK!
-          if: ${{ steps.host1_answer.outputs }} == "Hello from students API"
+      - name: HOST1 - Status OK!
+        if: ${{ steps.host1_answer.outputs }} == "Hello from students API"
        
-        - name: HOST2 - Status OK!
-          if: ${{ steps.host2_answer.outputs }} == "Hello from students API"
+      - name: HOST2 - Status OK!
+        if: ${{ steps.host2_answer.outputs }} == "Hello from students API"
