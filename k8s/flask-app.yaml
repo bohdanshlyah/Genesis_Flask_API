@@ -1,0 +1,89 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-config
+  namespace: flask-app
+data:
+  flask-app-name: api.py
+  flask-env: development
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:  
+    app: flask-app
+  name: flask-app
+spec:
+  selector:
+    matchLabels:
+      app: flask-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: flask-app
+          image: bohdanshlyah/flask-api:latest
+          imagePullPolicy: Always
+          env:
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-config 
+                  key: flask-app-name
+            - name: FLASK_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-config 
+                  key: flask-env
+            - name: DB_USERNAME
+              value: workshop
+            - name: DB_NAME
+              value: workshop
+            - name: DB_HOSTNAME
+              value: mysql
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 5000
+              name: flask
+          startupProbe:
+            httpGet:
+              path: /api/health-check/ok
+              port: flask
+            failureThreshold: 5
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health-check/ok
+              port: flask
+            failureThreshold: 5
+            periodSeconds: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app
+  namespace: flask-app
+spec:
+  selector:
+    name: flask-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: flask
+      name: flask-svc
